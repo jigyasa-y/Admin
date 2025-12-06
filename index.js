@@ -35,7 +35,7 @@ const addSkill=document.querySelector("#addMoreSkills");
  const skills=document.querySelector(".skills");
  const addProject=document.querySelector("#addProject");
  const viewProject=document.querySelector("#viewProject");
-const url="http://localhost:5000";
+const url="https://admin-server-2.onrender.com";
 let userId="123456789";
 
 // Update admin details display
