@@ -1,4 +1,4 @@
-const url = "http://localhost:5000";
+const url = "https://admin-server-2.onrender.com";
 const loginForm = document.querySelector("#loginForm");
 const errorMessage = document.querySelector("#errorMessage");
 const loginButton = document.querySelector("#loginButton");
