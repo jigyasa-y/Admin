@@ -273,8 +273,7 @@ catch(error){
         try{
             
 const response=await axios.post(`${url}/api/update/profilePic`,fileData);
-
-console.log(response);
+showPop(response.data.message);
 
         }
 
