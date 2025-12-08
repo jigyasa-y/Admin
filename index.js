@@ -1,4 +1,4 @@
-// Authentication check
+const loader=document.querySelector(".loader");
 const token = localStorage.getItem("adminToken");
 if (!token) {
     window.location.href = "login.html";
@@ -66,11 +66,11 @@ axios.interceptors.response.use(
 );
 
 window.onload=()=>{
-    // Verify token on page load
+ 
     axios.get(`${url}/api/auth/verify`)
         .then((response) => {
             if (response.data.success) {
-                // Update admin data if needed
+            
                 if (response.data.admin) {
                     localStorage.setItem("adminData", JSON.stringify(response.data.admin));
                     const adminNameEl = document.querySelector("#admin-name");
@@ -203,7 +203,7 @@ contentPage.innerHTML=`
         <input type="text" placeholder="About" id="about">
         <input type="text" placeholder="Tech used Ex:React NodeJs Express" id="technology">
         <input type="text" placeholder="Enter URL" id="projectURL">
-        <input type="file" id="addProject">
+        <input type="file" id="adProject">
     <button id="uploadProject" onclick="updateProject()">Upload</button>
     </div>
 
@@ -224,11 +224,11 @@ console.log(response.data)
 
 response.data.projects.forEach(project => {
      document.querySelector(".projects").innerHTML+=`
-        <div class="my_projects">
-<label for="" id="deleteButton" onclick="deleteProject('${project._id}')"><i class="fa-solid fa-trash" style="color: #ff0000;"></i></label>
+<div class="my_projects">
+<label for="" id="deleteButton" onclick="deleteProject(this,'${project._id}')"><i class="fa-solid fa-trash" style="color: #ff0000;"></i></label>
 
             <div id="imageCountainer">
-                <img src="./public/clinicWebsite.png" id="projectImage" alt="">
+                <img src=${project.image} id="projectImage" alt="">
             </div>
 
             <div class="about_project">
@@ -241,9 +241,7 @@ response.data.projects.forEach(project => {
             <a href="" id="viewButton">View project</a>
         </div>
 
-        
         `
-
     
 });
 
@@ -263,7 +261,7 @@ catch(error){
     });
 
     const imageUpload=async()=>{
-
+loading();
         const file=document.querySelector("#profile_pic").files[0];
         const fileData=new FormData();
         fileData.append("image",file);
@@ -273,6 +271,7 @@ catch(error){
         try{
             
 const response=await axios.post(`${url}/api/update/profilePic`,fileData);
+
 showPop(response.data.message);
 
         }
@@ -284,11 +283,12 @@ showPop(response.data.message);
     }
     
  
-const deleteProject=async(id)=>{
-
+const deleteProject=async(prop,id)=>{
+loading();
     try{
 const response=await axios.delete(`${url}/api/project/delete/${id}`);
-console.log(response.data);
+prop.parentElement.remove();
+showPop(response.data.message);
     }
     catch(error){
         console.log("error in message",error.message);
@@ -298,7 +298,7 @@ console.log(response.data);
 
 
 const updateName=async()=>{
-
+loading();
     try{
 const name=document.querySelector("#newName").value;
 
@@ -322,6 +322,7 @@ showPop(response.data.message);
 }
 
 const updateBio=async()=>{
+    loading();
     try{
 const bio=document.querySelector("#Bio").value;
 const response=await axios.post(`${url}/api/update/bio`,{
@@ -336,6 +337,7 @@ console.log("error in bio",error.message);
     }
 }
 const updateProfession=async()=>{
+    loading();
     const profession=document.querySelector("#proff").value;
     try{
 const response=await axios.post(`${url}/api/update/profession`,{
@@ -351,6 +353,7 @@ console.log(response.data);
 }
 
 const updateResume=async()=>{
+    loading();
     const resume=document.querySelector("#resume").value;
     try{
 const response=await axios.post(`${url}/api/update/resume`,{
@@ -365,6 +368,7 @@ console.log(response.data.message);
     }
 }
 const updateAddress=async()=>{
+    loading();
     const address=document.querySelector("#Address").value;
     try{
 const response=await axios.post(`${url}/api/contact/address`,{
@@ -379,6 +383,7 @@ console.log(response.data.message);
     }
 }
 const updatePhoneNum=async()=>{
+    loading();
     const mobile=document.querySelector("#number").value;
     try{
 const response=await axios.post(`${url}/api/contact/mobile`,{
@@ -394,6 +399,7 @@ showPop(response.data.message);
 }
 
 const updateFacebook=async()=>{
+    loading();
     const facebook=document.querySelector("#Fb_link").value;
     try{
 const response=await axios.post(`${url}/api/contact/fb`,{
@@ -409,6 +415,7 @@ console.log(response.data.message);
 }
 
 const updateGithub=async()=>{
+    loading();
     const github=document.querySelector("#Git_link").value;
     try{
 const response=await axios.post(`${url}/api/contact/github`,{
@@ -423,6 +430,7 @@ console.log(response.data.message);
     }
 }
 const updateLinked=async()=>{
+    loading();
     const linkedln=document.querySelector("#Linked_link").value;
     try{
 const response=await axios.post(`${url}/api/contact/linkedln`,{
@@ -441,6 +449,7 @@ console.log(response.data.message);
 }
 
 const updateSkill=async()=>{
+    loading();
     const name=document.querySelector(".skillName").value;
     const URL=document.querySelector(".skillURL").value;
     try{
@@ -457,22 +466,23 @@ console.log(response.data.message);
 }
 
 const updateProject=async()=>{
+    loading();
     const name=document.querySelector("#projectName").value;
     const about=document.querySelector("#about").value;
     const techs=document.querySelector("#technology").value;
     const URL=document.querySelector("#projectURL").value;
-   let image="jiggu.png";
+const file=document.querySelector("#adProject").files[0];
+const fileData=new FormData();
+fileData.append("image",file);
+fileData.append("name",name);
+fileData.append("about",about);
+fileData.append("techs",JSON.stringify(techs));
+fileData.append("URL",URL);
+
 
 try{
-const response=await axios.post(`${url}/api/project/add`,{
-    name,
-    about,
-    techs,
-    URL,
-    image
-
-});
-console.log(response.data.message);
+const response=await axios.post(`${url}/api/project/add`,fileData);
+showPop(response.data.message);
 }
 catch(error){
     console.log("error in message",error.message);
@@ -483,7 +493,7 @@ catch(error){
 
 const showPop=(message)=>{
     console.log(message);
-
+loader.classList.add("hidden");
     // Remove hiding class if it exists
     PopUp.classList.remove("hidden", "hiding");
     
@@ -504,6 +514,7 @@ const showPop=(message)=>{
 
 
 delPop.addEventListener("click",()=>{
+
     PopUp.classList.add("hiding");
     setTimeout(() => {
         PopUp.classList.add("hidden");
@@ -519,4 +530,9 @@ if (logoutBtn) {
             logout();
         }
     });
+}
+const loading=()=>{
+loader.classList.remove("hidden");
+
+
 }
