@@ -8,7 +8,74 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
 </head>
+
+<style>
+
+    .loader{
+    border: 1px solid black;
+display: flex;
+justify-content: center;
+flex-direction: column;
+align-items: center;
+    z-index: 999;
+    height: 100vh;
+    width: 100vw;
+    position: absolute;
+    backdrop-filter: brightness(0.2);
+}
+
+#spinner{
+    height: 3rem;
+    width: 3rem;
+    border: 2px solid white;
+    border-radius: 50%;
+    border-top:none;
+    border-left:none;
+    animation:spin 1s linear infinite;
+
+
+}
+
+#label{
+    color:rgb(133, 125, 125);
+    margin-top:5px;
+    font-size: 25px;
+    animation:fade 1.5s linear infinite;
+}
+@keyframes spin{
+    0%{
+        rotate: 0deg;
+
+    }
+    100%{
+        rotate: 360deg;
+ 
+    }
+}
+
+@keyframes fade{
+    0%{
+        opacity: 0;
+    }
+    50%{
+        opacity: 1;
+    }
+    100%{
+        opacity: 0;
+    }
+}
+
+.hidden{
+    display: none;
+}
+</style>
+
 <body>
+<div class="loader hidden">
+    <span id="spinner"></span>
+    <label for="" id="label">updating. . .</label>
+</div>
+
 
 <div class="popUp hidden">
     <span id="message"></span>
